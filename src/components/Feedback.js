@@ -55,7 +55,7 @@ const Feedback = () => {
     {
       id: 1,
       name: "Sarah Johnson",
-      feedback: "Working with Akay has been life-changing! I've never felt better."
+      feedback: "Working with Boujar has been life-changing! I've never felt better."
     },
     {
       id: 2,

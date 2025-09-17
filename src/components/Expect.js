@@ -79,7 +79,7 @@ function Expect() {
       </StyledExpectDescription>
       <StyledImageContainer>
         <StyledExpectImage
-          src="/pic/cato3.jpg"
+          src="/pic/boujar5.jpg"
           alt="What to Expect"
         />
         <StyledOverlayText className="overlay-text">

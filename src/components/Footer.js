@@ -17,7 +17,7 @@ const FooterText = styled.p`
 const FooterSection = () => {
   return (
     <FooterContainer>
-      <FooterText>&copy; 2024 Akay Coaching. All rights reserved.</FooterText>
+      <FooterText>&copy; 2024 Boujar Coaching. All rights reserved.</FooterText>
     </FooterContainer>
   );
 };

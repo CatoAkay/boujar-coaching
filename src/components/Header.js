@@ -4,7 +4,7 @@ import styled from "styled-components";
 const HeaderSection = styled.header`
     height: 100vh;
     position: relative;
-    background-image: url("/pic/cato1.jpg");
+    background-image: url("/pic/boujar2.jpeg");
     background-size: cover;
     background-position: 50% 24%;
     display: flex;
@@ -54,7 +54,7 @@ const Subtitle = styled.h2`
 function Header() {
   return (
     <HeaderSection>
-      <Title>Akay Coaching</Title>
+      <Title>Boujar Coaching</Title>
       <Subtitle>Your Journey to Fitness Awaits</Subtitle>
     </HeaderSection>
   );

@@ -95,13 +95,13 @@ function About() {
       {/* About Me Section */}
       <StyledTitle>About Me</StyledTitle>
       <StyledDescription>
-        Hi, I’m Akay - a Norwegian CrossFit athlete. I offer experience-based coaching to help you move better,
+        Hi, I’m Boujar - a Norwegian CrossFit athlete. I offer experience-based coaching to help you move better,
         get stronger, and build habits that last.
       </StyledDescription>
       <StyledImageContainerHover>
         <StyledExpectImage
-          src="/pic/cato1.jpg"
-          alt="About Akay"
+          src="/pic/boujar1.jpg"
+          alt="About Boujar"
         />
         <StyledOverlayText>
           "Your potential is endless. Believe in yourself!"
@@ -117,7 +117,7 @@ function About() {
       </StyledList>
       <StyledImageContainerHover>
         <StyledExpectImage
-          src="/pic/cato2.jpg"
+          src="/pic/boujar3.jpg"
           alt="What to Expect"
         />
         <StyledOverlayText>

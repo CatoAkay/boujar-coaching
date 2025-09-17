@@ -117,14 +117,14 @@ function Price() {
       <PriceTable>
         <PriceBox>
           <h3>Basic Plan</h3>
-          <p>$50 / month</p>
+          <p>$100 / month</p>
           <Button onClick={() => handleOpenModal("This plan includes basic coaching services and weekly check-ins.")}>
             View Details
           </Button>
         </PriceBox>
         <PriceBox>
           <h3>Premium Plan</h3>
-          <p>$100 / month</p>
+          <p>$200 / month</p>
           <Button onClick={() => handleOpenModal("This plan includes personalized coaching, weekly check-ins, and unlimited support.")}>
             View Details
           </Button>

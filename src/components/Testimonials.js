@@ -51,17 +51,17 @@ const Testimonials = () => {
     {
       id: 1,
       name: "John Doe",
-      testimonial: "Akay Coaching changed my life! I'm stronger, more confident, and healthier than ever."
+      testimonial: "Boujar Coaching changed my life! I'm stronger, more confident, and healthier than ever."
     },
     {
       id: 2,
       name: "Jane Smith",
-      testimonial: "The coaching sessions were transformative. Akay helped me unlock my true potential."
+      testimonial: "The coaching sessions were transformative. Boujar helped me unlock my true potential."
     },
     {
       id: 3,
       name: "Mike Johnson",
-      testimonial: "With Akay's guidance, I achieved my fitness goals in a way I never thought possible."
+      testimonial: "With Boujar's guidance, I achieved my fitness goals in a way I never thought possible."
     }
   ];
 
