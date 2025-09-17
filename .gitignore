@@ -31,3 +31,49 @@ pnpm-debug.log*
 .DS_Store
 .vscode/
 .idea/
+
+
+# .gitignore (legg til/erstatt i prosjektroten)
+# — Node / pakker
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# — Bygg/artefakter
+dist/
+build/
+coverage/
+out/
+
+# — Rammeverk/bundlere
+.next/
+.vercel/
+.turbo/
+.parcel-cache/
+.vite/
+.esbuild/
+.cache/
+.tmp/
+
+# — Cacher i node_modules
+node_modules/.cache/
+
+# — ESLint cache
+.eslintcache
+
+# — OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# — Env
+.env
+.env.*.local
+
+# — Diverse
+*.pack
+*.tgz
