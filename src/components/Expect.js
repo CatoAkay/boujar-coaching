@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledExpectSection = styled.section`
     padding: 100px 20px;
     text-align: center;
-    background-color: rgba(20, 20, 20, 0.9); // Dark background with transparency
+    background-color: rgba(20, 20, 20, 0.9);
 `;
 
 const StyledExpectTitle = styled.h2`
@@ -12,7 +12,7 @@ const StyledExpectTitle = styled.h2`
     font-weight: bold;
     margin-bottom: 20px;
     color: #ffffff;
-    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5); // Shadow for emphasis
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 `;
 
 const StyledExpectDescription = styled.p`
@@ -28,17 +28,17 @@ const StyledImageContainer = styled.div`
     margin: 30px auto;
     display: inline-block;
     overflow: hidden;
-    border-radius: 15px; // Rounded corners for modern look
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); // Deep shadow for depth
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     max-width: 600px;
     transition: transform 0.3s ease;
 
     &:hover {
-        transform: scale(1.05); // Slight zoom effect on hover
+        transform: scale(1.05);
     }
 
     &:hover .overlay-text {
-        opacity: 1; // Show overlay text on hover
+        opacity: 1;
     }
 `;
 
@@ -58,12 +58,12 @@ const StyledOverlayText = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.5); // Semi-transparent overlay
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    opacity: 0; // Initially hidden
+    opacity: 0;
     transition: opacity 0.3s ease;
     border-radius: 15px;
 `;
@@ -71,19 +71,21 @@ const StyledOverlayText = styled.div`
 function Expect() {
   return (
     <StyledExpectSection id="expect">
-      <StyledExpectTitle>What to Expect</StyledExpectTitle>
+      <StyledExpectTitle>How Coaching Works</StyledExpectTitle>
       <StyledExpectDescription>
-        With my coaching, you'll receive tailored programs, personalized
-        nutrition advice, and constant support. You'll push your boundaries and
-        achieve results you never thought possible.
+        Coaching with Boujar is simple and effective: you get individual
+        programming built around your goals, schedule, and training history;
+        weekly check-ins with clear targets and adjustments; video feedback
+        on lifts and skills; and practical guidance on recovery, nutrition
+        basics, and competition prep when needed. You bring the effort, I
+        bring the plan, the structure, and the accountability to keep you
+        progressing week after week.
       </StyledExpectDescription>
+
       <StyledImageContainer>
-        <StyledExpectImage
-          src="/pic/boujar5.jpg"
-          alt="What to Expect"
-        />
+        <StyledExpectImage src="/pic/boujar5.jpg" alt="How Coaching Works" />
         <StyledOverlayText className="overlay-text">
-          "Believe in yourself and you’ll be unstoppable!"
+          “Consistency beats motivation. Show up—I’ll handle the plan.”
         </StyledOverlayText>
       </StyledImageContainer>
     </StyledExpectSection>
