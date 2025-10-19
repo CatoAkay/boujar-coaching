@@ -136,7 +136,7 @@ function ContactForm() {
     };
 
     emailjs
-      .send("service_2iorjdh", "template_vhscy1f", emailParams, "tAULykMHD46veExPq")
+      .send("service_jy6hv7b", "template_vhscy1f", emailParams, "tAULykMHD46veExPq")
       .then(() => {
         setFormData({ name: "", email: "", message: "" });
         setSubmitted(true);

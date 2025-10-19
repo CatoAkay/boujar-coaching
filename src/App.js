@@ -54,13 +54,13 @@ function App() {
       <Navigation>
         <NavLink to="about" smooth={true} duration={500} activeClass="active">About Me</NavLink>
         <NavLink to="expect" smooth={true} duration={500} activeClass="active">What to Expect</NavLink>
-        <NavLink to="price" smooth={true} duration={500} activeClass="active">Price</NavLink>
+        {/*<NavLink to="price" smooth={true} duration={500} activeClass="active">Price</NavLink>*/}
         <NavLink to="contact" smooth={true} duration={500} activeClass="active">Contact</NavLink>
       </Navigation>
       <Header />
       <About />
       <Expect />
-      <Price />
+      {/*<Price />*/}
       <Feedback />
       <ContactForm />
       <Footer />
