@@ -4,7 +4,6 @@ import { Link } from "react-scroll";
 import Header from "./components/Header";
 import About from "./components/About";
 import Expect from "./components/Expect";
-import Price from "./components/Price";
 import ContactForm from "./components/ContactForm";
 import Footer from "./components/Footer";
 import GlobalStyle from './components/GlobalStyle';
