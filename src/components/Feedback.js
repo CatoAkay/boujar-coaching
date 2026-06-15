@@ -54,17 +54,17 @@ const Feedback = () => {
   const feedbackData = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: "Andreas Timenes",
       feedback: "Working with Boujar has been life-changing! I've never felt better."
     },
     {
       id: 2,
-      name: "Emily Davis",
+      name: "Cato Akay",
       feedback: "The coaching sessions were tailored perfectly to my needs. Highly recommend!"
     },
     {
       id: 3,
-      name: "Robert Brown",
+      name: "Aleksander Fridén",
       feedback: "Incredible support and guidance! I've achieved results I never thought possible."
     }
   ];
