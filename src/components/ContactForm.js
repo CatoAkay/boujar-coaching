@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import emailjs from "emailjs-com";
 
+/* ─── Styled components ─────────────────────────────────────── */
+
 const ContactSection = styled.section`
     padding: 100px 20px;
     text-align: center;
@@ -20,36 +22,54 @@ const Form = styled.form`
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    gap: 4px;
 `;
 
-const Input = styled.input`
+const FieldWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 6px;
+`;
+
+const Label = styled.label`
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+`;
+
+const inputBase = `
     padding: 15px;
-    margin: 10px 0;
     font-size: 1.1rem;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.1);
-    color: #b0b0b0;
+    color: #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-family: inherit;
+    transition: border-color 0.2s ease;
 
     &::placeholder {
-        color: #b0b0b0;
+        color: #888;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 `;
+
+const Input = styled.input`${inputBase}`;
 
 const TextArea = styled.textarea`
-    padding: 15px;
-    margin: 10px 0;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #b0b0b0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-
-    &::placeholder {
-        color: #b0b0b0;
-    }
+    ${inputBase}
+    resize: vertical;
+    min-height: 120px;
 `;
 
 const Button = styled.button`
@@ -60,6 +80,7 @@ const Button = styled.button`
     border-radius: 5px;
     cursor: pointer;
     font-size: 1.2rem;
+    margin-top: 6px;
     transition: background-color 0.3s;
 
     &:hover:enabled {
@@ -70,122 +91,214 @@ const Button = styled.button`
         background-color: #888;
         cursor: not-allowed;
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
 `;
 
-const ThankYouMessage = styled.div`
+const SuccessMessage = styled.div`
     margin-top: 20px;
-    color: #dcdcdc;
-    font-size: 1.5rem;
+    padding: 16px;
+    background: rgba(0, 180, 140, 0.12);
+    border: 1px solid rgba(0, 180, 140, 0.35);
+    border-radius: 8px;
+    color: #6ee7d0;
+    font-size: 1.1rem;
+`;
+
+const ErrorMessage = styled.div`
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(220, 60, 60, 0.12);
+    border: 1px solid rgba(220, 60, 60, 0.35);
+    border-radius: 8px;
+    color: #f08080;
+    font-size: 1rem;
 `;
 
 const Warning = styled.div`
     color: #ffb347;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    text-align: left;
 `;
 
 const spin = keyframes`
-    0% { transform: rotate(0deg);}
-    100% { transform: rotate(360deg);}
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 `;
 
 const Spinner = styled.div`
     margin: 20px auto;
-    border: 4px solid #dcdcdc;
-    border-top: 4px solid #2b4d4d;
+    border: 4px solid rgba(220, 220, 220, 0.2);
+    border-top-color: #2b4d4d;
     border-radius: 50%;
     width: 36px;
     height: 36px;
     animation: ${spin} 1s linear infinite;
 `;
 
+/* ─── Helpers ─────────────────────────────────────────────────── */
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const EMAILJS_SERVICE_ID  = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY  = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+
+const emailjsConfigured =
+    Boolean(EMAILJS_SERVICE_ID) &&
+    Boolean(EMAILJS_TEMPLATE_ID) &&
+    Boolean(EMAILJS_PUBLIC_KEY);
+
+/* ─── Component ───────────────────────────────────────────────── */
+
+const INITIAL_FORM = { name: "", email: "", message: "" };
+
 function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
+    const [formData, setFormData]   = useState(INITIAL_FORM);
+    const [submitted, setSubmitted] = useState(false);
+    const [sending, setSending]     = useState(false);
+    const [sendError, setSendError] = useState(null);
+    const [fieldErrors, setFieldErrors] = useState({});
 
-  const isFormValid =
-    formData.name.trim() !== "" &&
-    formData.email.trim() !== "" &&
-    formData.message.trim() !== "";
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!isFormValid) {
-      setShowWarning(true);
-      setTimeout(() => setShowWarning(false), 2000);
-      return;
-    }
-    setSending(true);
-
-    const message = `
-      Name: ${formData.name}
-      Email: ${formData.email}
-      Message: ${formData.message}
-    `;
-
-    const emailParams = {
-      name: formData.name,
-      email: formData.email,
-      message: message,
+    const validate = () => {
+        const errors = {};
+        if (!formData.name.trim())    errors.name    = "Name is required.";
+        if (!formData.email.trim())   errors.email   = "Email is required.";
+        else if (!EMAIL_REGEX.test(formData.email)) errors.email = "Please enter a valid email address.";
+        if (!formData.message.trim()) errors.message = "Message is required.";
+        return errors;
     };
 
-    emailjs
-      .send("service_jy6hv7b", "template_vhscy1f", emailParams, "tAULykMHD46veExPq")
-      .then(() => {
-        setFormData({ name: "", email: "", message: "" });
-        setSubmitted(true);
-        setSending(false);
-      })
-      .catch((err) => {
-        setSending(false);
-        console.error("Failed to send email.", err);
-      });
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        // Clear field error on change
+        if (fieldErrors[name]) {
+            setFieldErrors((prev) => ({ ...prev, [name]: undefined }));
+        }
+    };
 
-  return (
-    <ContactSection id="contact">
-      <ContactTitle>Contact Me</ContactTitle>
-      <Form onSubmit={handleSubmit}>
-        {showWarning && <Warning>Please fill out all fields before sending.</Warning>}
-        <Input
-          type="text"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          disabled={submitted || sending}
-        />
-        <Input
-          type="email"
-          placeholder="Your Email"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          disabled={submitted || sending}
-        />
-        <TextArea
-          rows="5"
-          placeholder="Your Message"
-          value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          disabled={submitted || sending}
-        />
-        {!submitted ? (
-          sending ? (
-            <Spinner />
-          ) : (
-            <Button type="submit">Send Message</Button>
-          )
-        ) : (
-          <ThankYouMessage>Thank you! I will be in touch!</ThankYouMessage>
-        )}
-      </Form>
-    </ContactSection>
-  );
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setSendError(null);
+
+        const errors = validate();
+        if (Object.keys(errors).length > 0) {
+            setFieldErrors(errors);
+            return;
+        }
+
+        if (!emailjsConfigured) {
+            setSendError("Contact form is not configured yet. Please reach out directly via Instagram or email.");
+            return;
+        }
+
+        setSending(true);
+
+        emailjs
+            .send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                {
+                    name:    formData.name,
+                    email:   formData.email,
+                    message: formData.message,
+                },
+                EMAILJS_PUBLIC_KEY
+            )
+            .then(() => {
+                setFormData(INITIAL_FORM);
+                setSubmitted(true);
+                setSending(false);
+            })
+            .catch(() => {
+                setSending(false);
+                setSendError("Something went wrong — please try again in a moment.");
+            });
+    };
+
+    return (
+        <ContactSection id="contact">
+            <ContactTitle>Contact Me</ContactTitle>
+
+            {submitted ? (
+                <SuccessMessage role="status">
+                    Thank you! I'll be in touch soon 🙌
+                </SuccessMessage>
+            ) : (
+                <Form onSubmit={handleSubmit} noValidate aria-label="Contact form">
+                    <FieldWrapper>
+                        <Label htmlFor="contact-name">Your Name</Label>
+                        <Input
+                            id="contact-name"
+                            name="name"
+                            type="text"
+                            placeholder="e.g. Andreas Timenes"
+                            value={formData.name}
+                            onChange={handleChange}
+                            disabled={sending}
+                            aria-describedby={fieldErrors.name ? "error-name" : undefined}
+                            aria-invalid={Boolean(fieldErrors.name)}
+                            autoComplete="name"
+                        />
+                        {fieldErrors.name && (
+                            <Warning id="error-name" role="alert">{fieldErrors.name}</Warning>
+                        )}
+                    </FieldWrapper>
+
+                    <FieldWrapper>
+                        <Label htmlFor="contact-email">Your Email</Label>
+                        <Input
+                            id="contact-email"
+                            name="email"
+                            type="email"
+                            placeholder="you@example.com"
+                            value={formData.email}
+                            onChange={handleChange}
+                            disabled={sending}
+                            aria-describedby={fieldErrors.email ? "error-email" : undefined}
+                            aria-invalid={Boolean(fieldErrors.email)}
+                            autoComplete="email"
+                        />
+                        {fieldErrors.email && (
+                            <Warning id="error-email" role="alert">{fieldErrors.email}</Warning>
+                        )}
+                    </FieldWrapper>
+
+                    <FieldWrapper>
+                        <Label htmlFor="contact-message">Your Message</Label>
+                        <TextArea
+                            id="contact-message"
+                            name="message"
+                            rows="5"
+                            placeholder="Tell me about your goals, schedule, or anything else..."
+                            value={formData.message}
+                            onChange={handleChange}
+                            disabled={sending}
+                            aria-describedby={fieldErrors.message ? "error-message" : undefined}
+                            aria-invalid={Boolean(fieldErrors.message)}
+                        />
+                        {fieldErrors.message && (
+                            <Warning id="error-message" role="alert">{fieldErrors.message}</Warning>
+                        )}
+                    </FieldWrapper>
+
+                    {sending ? (
+                        <Spinner aria-label="Sending…" />
+                    ) : (
+                        <Button type="submit">Send Message</Button>
+                    )}
+
+                    {sendError && (
+                        <ErrorMessage role="alert">{sendError}</ErrorMessage>
+                    )}
+                </Form>
+            )}
+        </ContactSection>
+    );
 }
 
 export default ContactForm;

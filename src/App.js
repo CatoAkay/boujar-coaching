@@ -6,9 +6,9 @@ import About from "./components/About";
 import Expect from "./components/Expect";
 import ContactForm from "./components/ContactForm";
 import Footer from "./components/Footer";
-import GlobalStyle from './components/GlobalStyle';
-import Feedback from './components/Feedback';
-import './App.css';
+import GlobalStyle from "./components/GlobalStyle";
+import Feedback from "./components/Feedback";
+import "./App.css";
 
 const Container = styled.div`
     font-family: Arial, Helvetica, sans-serif;
@@ -33,7 +33,7 @@ const NavLink = styled(Link)`
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s ease, transform 0.3s ease;
-    cursor: pointer; /* Ensures the cursor is a pointer on hover */
+    cursor: pointer;
 
     &.active {
         color: #f76c6c;
@@ -44,27 +44,32 @@ const NavLink = styled(Link)`
         color: #f76c6c;
         transform: scale(1.1);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+        &:hover {
+            transform: none;
+        }
+    }
 `;
 
 function App() {
-  return (
-    <Container>
-      <GlobalStyle />
-      <Navigation>
-        <NavLink to="about" smooth={true} duration={500} activeClass="active">About Me</NavLink>
-        <NavLink to="expect" smooth={true} duration={500} activeClass="active">What to Expect</NavLink>
-        {/*<NavLink to="price" smooth={true} duration={500} activeClass="active">Price</NavLink>*/}
-        <NavLink to="contact" smooth={true} duration={500} activeClass="active">Contact</NavLink>
-      </Navigation>
-      <Header />
-      <About />
-      <Expect />
-      {/*<Price />*/}
-      <Feedback />
-      <ContactForm />
-      <Footer />
-    </Container>
-  );
+    return (
+        <Container>
+            <GlobalStyle />
+            <Navigation aria-label="Main navigation">
+                <NavLink to="about"   smooth duration={500} activeClass="active">About Me</NavLink>
+                <NavLink to="expect"  smooth duration={500} activeClass="active">What to Expect</NavLink>
+                <NavLink to="contact" smooth duration={500} activeClass="active">Contact</NavLink>
+            </Navigation>
+            <Header />
+            <About />
+            <Expect />
+            <Feedback />
+            <ContactForm />
+            <Footer />
+        </Container>
+    );
 }
 
 export default App;

@@ -1,70 +1,120 @@
-# Getting Started with Create React App
+# Boujar Coaching
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Personal coaching website for Boujar — Norwegian CrossFit Games athlete and coach.
 
-## Available Scripts
+**Live site:** https://boujar-coaching.vercel.app/
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Tech stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React 18 (Create React App)
+- styled-components
+- react-scroll (smooth navigation)
+- EmailJS (contact form)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Getting started locally
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+# Install dependencies
+npm install
 
-### `npm run build`
+# Copy the env template and fill in your EmailJS credentials
+cp .env.example .env.local
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Start the dev server
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Environment variables
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The contact form uses [EmailJS](https://www.emailjs.com/).  
+You must set the following environment variables — **both locally and in Vercel**.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Variable | Where to find it |
+|---|---|
+| `REACT_APP_EMAILJS_SERVICE_ID` | EmailJS dashboard → Email Services → your service ID |
+| `REACT_APP_EMAILJS_TEMPLATE_ID` | EmailJS dashboard → Email Templates → your template ID |
+| `REACT_APP_EMAILJS_PUBLIC_KEY` | EmailJS dashboard → Account → Public Key |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Setting variables in Vercel
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Go to your project in [vercel.com](https://vercel.com)
+2. **Settings → Environment Variables**
+3. Add each variable above for **Production**, **Preview**, and **Development**
+4. Redeploy (or push a new commit) to apply the changes
 
-## Learn More
+### Setting variables locally
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Create a `.env.local` file in the project root (already git-ignored):
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+REACT_APP_EMAILJS_SERVICE_ID=your_service_id
+REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id
+REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
+```
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Testing that EmailJS works
 
-### Analyzing the Bundle Size
+1. Start the dev server (`npm start`)
+2. Scroll to the **Contact Me** section
+3. Fill in name, a real email, and a message — click **Send Message**
+4. You should see the green success message: *"Thank you! I'll be in touch soon 🙌"*
+5. Check the inbox of the email address configured in your EmailJS template
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**If it fails:**
+- Check the browser console for any network errors
+- Verify all three env vars are set and the dev server was restarted after adding them
+- Confirm the EmailJS service, template, and public key are all active in your EmailJS dashboard
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Available scripts
 
-### Advanced Configuration
+| Script | Description |
+|---|---|
+| `npm start` | Start dev server on http://localhost:3000 |
+| `npm run build` | Production build to `/build` |
+| `npm test` | Run tests |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## Project structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
+src/
+  components/
+    About.js         – About Me section
+    ContactForm.js   – Contact form with EmailJS
+    Expect.js        – How Coaching Works section
+    Feedback.js      – Customer testimonials
+    Footer.js        – Site footer
+    GlobalStyle.js   – Global CSS reset & base styles
+    Header.js        – Hero/banner section
+    Price.js         – (unused) Pricing section
+    Testimonials.js  – (unused) older testimonials component
+  App.js             – Root layout & navigation
+  index.js           – React entry point
+public/
+  index.html         – HTML template
+  pic/               – Coaching photos
+```
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## ⚠️ Security note
+
+The EmailJS public key, service ID, and template ID were previously hardcoded in the source code.  
+**These values should be treated as compromised.** It is strongly recommended to:
+
+1. Regenerate your EmailJS public key (Account → API Keys)
+2. Update the new values in `.env.local` and Vercel environment variables
+3. Do **not** commit `.env.local` — it is already in `.gitignore`
